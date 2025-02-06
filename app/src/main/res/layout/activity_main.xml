@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="ExtraText"
+    android:orientation="vertical">
+
+
+/gambar
+    <ImageView
+        android:id="@+id/logo1"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img2"
+        android:layout_marginBottom="450dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+/textbox email
+    <EditText
+        android:id="@+id/txtemail"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textSize="20sp"
+        android:layout_marginBottom="400sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/emailerror"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:text="Format email salah!"
+        android:textSize="20sp"
+        android:textColor="#ff00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtemail"
+        android:visibility="invisible"
+        />
+
+
+/textbox password
+    <EditText
+        android:id="@+id/txtpassword"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:hint="Password"
+        android:layout_marginBottom="325sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtemail"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:inputType="textPassword"
+        />
+
+    <TextView
+        android:id="@+id/pwerror"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:text="Format password salah!"
+        android:textSize="20sp"
+        android:textColor="#ff00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtpassword"
+        android:visibility="invisible"
+        />
+
+
+
+//button login
+    <Button
+        android:id="@+id/btnlogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="LOGIN"
+        android:textColor="@color/white"
+        android:background="#f00"
+        android:layout_marginBottom="125sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtpassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+//button lupa password
+    <Button
+        android:id="@+id/btnlupapassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lupa Password?"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:background="#0000"
+        android:layout_marginTop="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnlogin"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
