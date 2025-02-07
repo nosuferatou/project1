@@ -31,26 +31,28 @@ class MainActivity : ComponentActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val btnlogin = findViewById<Button>(R.id.btnlogin)
-        val txtemail = findViewById<EditText>(R.id.txtemail)
-        val txtpassword = findViewById<EditText>(R.id.txtpassword)
-        val pwerror = findViewById<TextView>(R.id.pwerror)
-        val emailerror = findViewById<TextView>(R.id.emailerror)
-
-        txtpassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                val password = s.toString()
-                if (password.length < 8 || !password.any { it.isUpperCase() } || !password.any { it.isDigit() }) {
-                    pwerror.visibility = TextView.VISIBLE
-                } else {
-                    pwerror.visibility = TextView.INVISIBLE
+        binding.apply {
+            txtpassword.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                 }
-            }
-        })
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(s: Editable?) {
+                    val password = s.toString()
+                    if (password.length < 8 || !password.any { it.isUpperCase() } || !password.any { it.isDigit() }) {
+                        pwerror.visibility = TextView.VISIBLE
+                    } else {
+                        pwerror.visibility = TextView.INVISIBLE
+                    }
+                }
+            })
+        }
 
         fun isValidEmail(email: String): Boolean {
             return if (email.isEmpty()) {
@@ -60,7 +62,7 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        txtemail.addTextChangedListener(object : TextWatcher {
+        binding.txtemail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -68,15 +70,15 @@ class MainActivity : ComponentActivity() {
             override fun afterTextChanged(s: Editable?) {
                 val inputemail = s.toString()
                 if (!isValidEmail(inputemail)) {
-                    emailerror.visibility = TextView.VISIBLE
+                    binding.emailerror.visibility = TextView.VISIBLE
                 } else {
-                    emailerror.visibility = TextView.INVISIBLE
+                    binding.emailerror.visibility = TextView.INVISIBLE
                 }
             }
 
         })
 
-        btnlogin.setOnClickListener {
+        binding.btnlogin.setOnClickListener {
             Intent(this, ActivityDetail::class.java).also {
                 startActivity(it)
             }
