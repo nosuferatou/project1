@@ -35,17 +35,13 @@ class ActivityFourth : Activity() {
             val inputradiogroup = binding.radiogroup1.checkedRadioButtonId
             val inputtedrg = findViewById<RadioButton>(inputradiogroup)
 
-            val cb1 = binding.cb1.isChecked
-            val cb2 = binding.cb2.isChecked
-            val cb3 = binding.cb3.isChecked
 
-            
 
             val hasil = "Hasil:\n" +
                     "${inputtedrg.text}" +
-                    (if (cb1) "1" else "") +
-                    (if (cb2) "2" else "") +
-                    (if (cb3) "3" else "")
+                    (if (binding.cb1.isChecked) "1" else "") +
+                    (if (binding.cb2.isChecked) "2" else "") +
+                    (if (binding.cb3.isChecked) "3" else "")
 
             hasilpesanan.text = hasil
         }
