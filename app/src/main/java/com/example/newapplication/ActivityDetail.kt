@@ -1,6 +1,8 @@
 package com.example.newapplication
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -20,11 +22,14 @@ import com.example.newapplication.ui.theme.NewApplicationTheme
 class ActivityDetail : ComponentActivity() {
 
     private lateinit var binding: ActivityDetailBinding
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        sharedPref = getSharedPreferences("LoginPref", Context.MODE_PRIVATE)
 
         val btnclick = findViewById<Button>(R.id.btnclick)
         val etname = findViewById<EditText>(R.id.etname)
@@ -41,6 +46,17 @@ class ActivityDetail : ComponentActivity() {
 
             }
         }
+        binding.btnlogout.setOnClickListener {
+            logout()
+            Intent(this, MainActivity::class.java).also {
+                startActivity(it)
+            }
+        }
 
+    }
+    private fun logout() {
+        val editor = sharedPref.edit()
+        editor.clear()
+        editor.apply()
     }
 }

@@ -1,9 +1,14 @@
 package com.example.newapplication
 
+import android.content.Context
+import android.view.View
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Email
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
@@ -25,68 +30,63 @@ import com.example.newapplication.ui.theme.NewApplicationTheme
 class MainActivity : ComponentActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var sharedPref: SharedPreferences
+
+    private val inputemail = "admin"
+    private val inputpw = "admin123"
+    private val pref_name = "LoginPref"
+    private val emailkey = "email"
+    private val passwordkey = "password"
+    private val LoggedInkey = "LoggedIn"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.apply {
-            txtpassword.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
+        sharedPref = getSharedPreferences("LoginPref", Context.MODE_PRIVATE)
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-                override fun afterTextChanged(s: Editable?) {
-                    val password = s.toString()
-                    if (password.length < 8 || !password.any { it.isUpperCase() } || !password.any { it.isDigit() }) {
-                        pwerror.visibility = TextView.VISIBLE
-                    } else {
-                        pwerror.visibility = TextView.INVISIBLE
-                    }
-                }
-            })
-        }
-
-        fun isValidEmail(email: String): Boolean {
-            return if (email.isEmpty()) {
-                false
-            } else {
-                Patterns.EMAIL_ADDRESS.matcher(email).matches()
-            }
-        }
-
-        binding.txtemail.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                val inputemail = s.toString()
-                if (!isValidEmail(inputemail)) {
-                    binding.emailerror.visibility = TextView.VISIBLE
-                } else {
-                    binding.emailerror.visibility = TextView.INVISIBLE
-                }
-            }
-
-        })
-
-        binding.btnlogin.setOnClickListener {
+        if (isLoggedIn()) {
             Intent(this, ActivityDetail::class.java).also {
                 startActivity(it)
             }
-            Toast.makeText(this, "Selamat Datang!", Toast.LENGTH_LONG).show()
+        }
+        binding.btnlogin.setOnClickListener {
+            val inputtedemail = binding.txtemail.text.toString()
+            val inputtedpassword = binding.txtpassword.text.toString()
+
+            if (inputtedemail == inputemail && inputtedpassword == inputpw) {
+
+                saveLoginCredentials(inputtedemail, inputtedpassword)
+                Intent(this, ActivityDetail::class.java).also {
+                    startActivity(it)
+                }
+            } else {
+                Toast.makeText(this, "False", Toast.LENGTH_LONG).show()
+            }
         }
     }
-}
+    private fun validateCredentials(email: String, password: String):Boolean{
+        return email == inputemail && password == inputpw
+    }
+    private fun saveLoginCredentials(email: String, password: String) {
+        val editor = sharedPref.edit()
+        editor.putString(emailkey, email)
+        editor.putString(passwordkey, password)
+        editor.putBoolean(LoggedInkey, true)
+        editor.apply()
 
+    }
+    private fun isLoggedIn(): Boolean {
+        return sharedPref.getBoolean(LoggedInkey, false)
+    }
+    fun logout() {
+        val editor = sharedPref.edit()
+        editor.clear()
+        editor.apply()
+    }
+}
 
 
 
