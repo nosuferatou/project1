@@ -28,6 +28,18 @@ class sharedPref(context: Context){
     fun isLoggedIn(): Boolean {
         return sharedPref.getBoolean(LOGIN_KEY, false)
     }
+
+    fun logout() {
+        val editor = sharedPref.edit()
+        editor.clear()
+        editor.apply()
+    }
+
+    fun getusername(username: String): Boolean {
+        return username == USERNAME_KEY
+
+    }
+
 }
 
 

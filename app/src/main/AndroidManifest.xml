@@ -17,21 +17,17 @@
             android:exported="false"
             android:label="@string/title_activity_third"
             android:theme="@style/Theme.NewApplication" />
-        <activity
-            android:name=".MainActivity2"
-            android:exported="false"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/Theme.NewApplication" />
+
         <activity
             android:name=".ActivityDetail"
             android:exported="false"
             android:label="@string/title_activity_detail"
-            android:theme="@style/Theme.NewApplication" />
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.NewApplication">
+            android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

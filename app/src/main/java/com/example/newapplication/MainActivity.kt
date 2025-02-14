@@ -6,10 +6,11 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.newapplication.databinding.ActivityMainBinding
 import com.example.newapplication.sharedPref.sharedPref
 
-class MainActivity : Activity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPref: sharedPref
@@ -33,7 +34,8 @@ class MainActivity : Activity() {
 
             if (sharedPref.validateLogin(username, password)) {
                 (sharedPref.saveLogin(username))
-                finish()
+                binding.txtpassword.text.clear()
+                binding.txtemail.text.clear()
                 startActivity(Intent(this, ActivityDetail::class.java))
             } else {
                 Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
