@@ -55,6 +55,8 @@ dependencies {
     implementation ("androidx.fragment:fragment-ktx:1.6.1")
     implementation ("androidx.core:core-ktx:1.10.1")
     implementation ("androidx.appcompat:appcompat:1.6.1")
+    implementation ("androidx.recyclerview:recyclerview:1.4.0")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 
 
 

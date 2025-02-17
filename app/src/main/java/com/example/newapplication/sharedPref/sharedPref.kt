@@ -13,6 +13,7 @@ class sharedPref(context: Context){
         private val PREF_NAME = "LoginPref"
         private val USERNAME_KEY = "username"
         private val LOGIN_KEY = "isLoggedIn"
+        private val PROFILENAME_KEY = "ProfileName"
     }
 
     fun saveLogin(username: String) {
@@ -35,9 +36,10 @@ class sharedPref(context: Context){
         editor.apply()
     }
 
-    fun getusername(username: String): Boolean {
-        return username == USERNAME_KEY
 
+
+    fun getusername(): String? {
+        return sharedPref.getString(USERNAME_KEY, "Guest") // Default "Guest" jika username tidak ditemukan
     }
 
 }

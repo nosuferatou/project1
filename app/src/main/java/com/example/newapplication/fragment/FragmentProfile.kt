@@ -25,6 +25,10 @@ class FragmentProfile: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sharedPref = sharedPref(requireContext())
 
+        val username = sharedPref.getusername()
+
+        binding.profilename.text = username
+
 
         binding.btnlogout.setOnClickListener {
             sharedPref.logout()
