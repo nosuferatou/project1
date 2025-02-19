@@ -24,7 +24,6 @@ import com.example.newapplication.fragment.FragmentHome
 import com.example.newapplication.fragment.FragmentProfile
 import com.example.newapplication.fragment.FragmentSearch
 import com.example.newapplication.sharedPref.sharedPref
-import com.example.newapplication.ui.theme.NewApplicationTheme
 
 class ActivityDetail : AppCompatActivity() {
     private lateinit var sharedPref: sharedPref
