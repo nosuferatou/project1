@@ -29,6 +29,7 @@ class ItemAdapter(private val itemlist: List<Item>) :
         holder.ProfileName.text = item.name
         holder.ProfileAge.text = item.age.toString()
         holder.ProfilePict.setImageResource(item.userpict)
+        R.id.nav_search
 
     }
 

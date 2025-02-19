@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
             val username = binding.txtemail.text.toString()
             val password = binding.txtpassword.text.toString()
 
+            // memvalidasi login
             if (sharedPref.validateLogin(username, password)) {
                 (sharedPref.saveLogin(username))
                 binding.txtpassword.text.clear()

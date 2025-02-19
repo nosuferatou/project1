@@ -18,4 +18,5 @@ class FragmentSearch: Fragment() {
         binding = FragmentSearchBinding.inflate(layoutInflater)
         return binding.root
     }
+
 }

@@ -28,8 +28,6 @@ import com.example.newapplication.ui.theme.NewApplicationTheme
 
 class ActivityDetail : AppCompatActivity() {
     private lateinit var sharedPref: sharedPref
-
-
     private lateinit var binding: ActivityDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +36,7 @@ class ActivityDetail : AppCompatActivity() {
         setContentView(binding.root)
         sharedPref = sharedPref(this)
 
+        // load fragment menggunakan fungsi loadFragment(Fragment yang dituju())
         loadFragment(FragmentHome())
 
         binding.navbottom.setOnItemSelectedListener { item ->
@@ -57,6 +56,7 @@ class ActivityDetail : AppCompatActivity() {
 
     }
 
+    // fungsi loadFragment menggunakan supportFragmentManager.beginTransaction()
     private fun loadFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
