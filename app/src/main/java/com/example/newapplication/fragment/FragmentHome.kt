@@ -1,10 +1,12 @@
 package com.example.newapplication.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,12 +17,16 @@ import com.example.newapplication.ItemAdapter2
 import com.example.newapplication.databinding.FragmentHomeBinding
 import com.example.newapplication.model.Item
 import com.example.newapplication.R
+import com.example.newapplication.model.Genres
 import com.example.newapplication.model.Item2
 import com.example.newapplication.model.MovieListModel
 import com.example.newapplication.service.RetrofitClient
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+import java.io.IOException
 
 
 class FragmentHome: Fragment() {
@@ -72,7 +78,23 @@ class FragmentHome: Fragment() {
 
         // set recycleview
         recycleview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recycleview.adapter = ItemAdapter2(listModel.results)
+        var genreStr = getJsonDataFromAsset(requireContext(),"genre.json")
+        val genreResponse = Gson().fromJson(genreStr, Genres::class.java)
+
+        recycleview.adapter = ItemAdapter2(listModel.results, genreResponse) { selectedMovie ->
+            Toast.makeText(requireContext(), "Clicked: ${selectedMovie.title}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun getJsonDataFromAsset(context: Context, fileName: String): String? {
+        val jsonString: String
+        try {
+            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+        } catch (ioException: IOException) {
+            ioException.printStackTrace()
+            return null
+        }
+        return jsonString
     }
 
     // membuat function
