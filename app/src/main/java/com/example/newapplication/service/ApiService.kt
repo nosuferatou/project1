@@ -10,4 +10,10 @@ interface ApiService {
 
     @GET("popular")
     fun getPopularMovies(@Query("api_key") apiKey: String = Constants.API_KEY): Call<MovieListModel>
+
+    @GET("now_playing")
+    fun getNowPlayingMovies(@Query("api_key") apiKey: String = Constants.API_KEY): Call<MovieListModel>
+
+    @GET("top_rated")
+    fun getTopRated(@Query("api_key") apiKey: String = Constants.API_KEY): Call<MovieListModel>
 }

@@ -6,11 +6,12 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import com.example.newapplication.databinding.ActivityMainBinding
 import com.example.newapplication.sharedPref.sharedPref
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPref: sharedPref

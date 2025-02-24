@@ -18,5 +18,4 @@
         app:menu="@menu/bottom_nav"
         android:background="#f00"
         />
-
 </LinearLayout>

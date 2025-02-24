@@ -8,7 +8,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
     <TextView
@@ -21,9 +21,9 @@
         />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView"
+        android:id="@+id/popularMovieRv"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         android:layout_marginTop="15dp"
         />
 
@@ -37,7 +37,7 @@
                 />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycleViewNowPlaying"
+                android:id="@+id/nowPlayingRv"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="15dp"
@@ -46,17 +46,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Top Series"
+        android:text="Top Rated Movies"
         android:textSize="30sp"
         android:textStyle="bold"
         android:textColor="@color/white"
         />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView2"
+        android:id="@+id/topRatedRv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
         android:layout_marginTop="15dp"
         />
 

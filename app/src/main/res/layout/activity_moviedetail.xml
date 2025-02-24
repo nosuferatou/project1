@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutbackground"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp"
+    >
+
+    <ImageView
+        android:id="@+id/movieposter"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        tools:src="@drawable/berserk"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:id="@+id/MovieTitleTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        tools:text="Title"
+        android:textStyle="bold"
+        />
+
+    <TextView
+            android:id="@+id/YearTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Year"
+            android:textSize="25sp"
+            />
+
+    <TextView
+        android:id="@+id/movieGenre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Genre"
+        android:textSize="25sp"
+        />
+
+    <TextView
+        android:id="@+id/movieRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Rating"
+        android:textSize="25sp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Overview"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/OverviewTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Overview Field"
+        android:textStyle="italic"
+        android:textSize="20sp"
+        android:textAlignment="viewStart"
+        />
+
+
+</LinearLayout>
