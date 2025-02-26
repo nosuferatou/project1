@@ -2,6 +2,7 @@ package com.example.newapplication.fragment
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,6 +27,21 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
+
+class SpaceItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(
+        outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
+    ) {
+        outRect.bottom = space // Add space at the bottom of each item
+        outRect.left = space   // Add space on the left
+        outRect.right = space  // Add space on the right
+        outRect.top = space
+
+        // Add space at the top only for the first item to avoid extra space at the top of the list
+//        if (parent.getChildAdapterPosition(view) == 0) {
+//            outRect.top = space
+        }
+    }
 
 
 class FragmentHome: Fragment() {
@@ -135,6 +151,7 @@ class FragmentHome: Fragment() {
     private  fun setPopularRv(listModel: MovieListModel){
         // membuat variabel untuk recycleview yang ada di layout fragment_home.xml
         val popularMovie = binding.popularMovieRv
+        popularMovie.addItemDecoration(SpaceItemDecoration(10))
 
         // set recycleview
         popularMovie.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -144,12 +161,7 @@ class FragmentHome: Fragment() {
         // logika select item from recycleview (use adapter)
         popularMovie.adapter = AdapterPopMovie(listModel.results, genreResponse) { selectedMovie ->
                 val intent = Intent(context, MovieDetail::class.java).apply {
-                    putExtra("MOVIE_NAME", selectedMovie.title)
-                    putExtra("MOVIE_POSTER", Constants.IMAGE_PATH + selectedMovie.poster_path.substring(1))
-                    putExtra("MOVIE_OVERVIEW", selectedMovie.overview)
-                    putExtra("RELEASE_DATE", selectedMovie.release_date.substring(0, 4))
-                    putIntegerArrayListExtra("MOVIE_GENRE", ArrayList(selectedMovie.genre_ids))
-                    putExtra("MOVIE_RATING", selectedMovie.vote_average.toString())
+                    putExtra("MOVIE", selectedMovie)
                 }
                 startActivity(intent)
             Toast.makeText(requireContext(), "Clicked: ${selectedMovie.title}", Toast.LENGTH_SHORT).show()
@@ -159,6 +171,7 @@ class FragmentHome: Fragment() {
     // set RecyclerView Now Playing
     private fun setNowPlayingRv(listModel: MovieListModel) {
         val nowPlaying = binding.nowPlayingRv
+        nowPlaying.addItemDecoration(SpaceItemDecoration(10))
         nowPlaying.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         // get Data from local Json
@@ -168,12 +181,7 @@ class FragmentHome: Fragment() {
         // set adapter and select item logic
         nowPlaying.adapter = AdapterNowPlaying(listModel.results, genreResponse) { selectedMovie ->
             val intent = Intent(context, MovieDetail::class.java).apply {
-                putExtra("MOVIE_NAME", selectedMovie.title)
-                putExtra("MOVIE_POSTER", Constants.IMAGE_PATH + selectedMovie.poster_path.substring(1))
-                putExtra("MOVIE_OVERVIEW", selectedMovie.overview)
-                putExtra("RELEASE_DATE", selectedMovie.release_date.substring(0, 4))
-                putIntegerArrayListExtra("MOVIE_GENRE", ArrayList(selectedMovie.genre_ids))
-                putExtra("MOVIE_RATING", selectedMovie.vote_average.toString())
+                putExtra("MOVIE", selectedMovie)
             }
             startActivity(intent)
             Toast.makeText(requireContext(), "Clicked: ${selectedMovie.title}", Toast.LENGTH_SHORT).show()
@@ -183,8 +191,9 @@ class FragmentHome: Fragment() {
     // set RecyclerView Top Rated
     private fun setTopRatedRv(listModel: MovieListModel) {
         val topRated = binding.topRatedRv
-        topRated.layoutManager = GridLayoutManager(requireContext(), 2)
-//        setRecyclerViewHeightForGrid(topRated, 3)
+        topRated.addItemDecoration(SpaceItemDecoration(10))
+
+        topRated.layoutManager = GridLayoutManager(requireContext(), 3)
 
         // get Data from local Json
         val genreStr = getJsonDataFromAsset(requireContext(),"genre.json")
@@ -193,16 +202,13 @@ class FragmentHome: Fragment() {
         // set adapter and select item logic
         topRated.adapter = AdapterTopRated(listModel.results, genreResponse) { selectedMovie ->
             val intent = Intent(context, MovieDetail::class.java).apply {
-                putExtra("MOVIE_NAME", selectedMovie.title)
-                putExtra("MOVIE_POSTER", Constants.IMAGE_PATH + selectedMovie.poster_path.substring(1))
-                putExtra("MOVIE_OVERVIEW", selectedMovie.overview)
-                putExtra("RELEASE_DATE", selectedMovie.release_date.substring(0, 4))
-                putIntegerArrayListExtra("MOVIE_GENRE", ArrayList(selectedMovie.genre_ids))
-                putExtra("MOVIE_RATING", selectedMovie.vote_average.toString())
+                putExtra("MOVIE", selectedMovie)
             }
             startActivity(intent)
             Toast.makeText(requireContext(), "Clicked: ${selectedMovie.title}", Toast.LENGTH_SHORT).show()
         }
+        setRecyclerViewHeightForGrid(topRated, 3)
+
     }
 
         }

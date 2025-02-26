@@ -1,13 +1,18 @@
 package com.example.newapplication
 
 import android.content.Context
+import android.icu.text.DecimalFormat
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.newapplication.databinding.ActivityMoviedetailBinding
 import com.example.newapplication.model.Genres
+import com.example.newapplication.model.Movie
+import com.example.newapplication.model.MovieListModel
 import com.google.gson.Gson
 import java.io.IOException
+import java.math.BigDecimal
 
 
 class MovieDetail : AppCompatActivity() {
@@ -19,13 +24,23 @@ class MovieDetail : AppCompatActivity() {
         binding = ActivityMoviedetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val movieName = intent.getStringExtra("MOVIE_NAME")
-        val moviePoster = intent.getStringExtra("MOVIE_POSTER")
-        val movieOverview = intent.getStringExtra("MOVIE_OVERVIEW")
-        val movieGenre: ArrayList<Int>? = intent.getIntegerArrayListExtra("MOVIE_GENRE")
+        val movie: Movie? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("MOVIE", Movie::class.java)
+        } else {
+            intent.getParcelableExtra("MOVIE")
+        }
+
+        val movieName = movie?.title
+        val moviePoster = movie?.poster_path
+        val movieOverview = movie?.overview
+        val movieGenre: List<Int>? = movie?.genre_ids
         val genreText = movieGenre?.joinToString(", ") ?: "No genres available"
-        val movieReleaseDate = intent.getStringExtra("RELEASE_DATE")
-        val movieRating = intent.getStringExtra("MOVIE_RATING")
+        val movieReleaseDate = movie?.release_date
+//        var rating = String.format("%.1f", movie?.vote_average.toString())
+//        val movieRating = rating
+
+        val df = DecimalFormat("#.#")
+        val movieRating = df.format(movie?.vote_average)
 
         var genreStr = getJsonDataFromAsset(this,"genre.json")
         val genreResponse = Gson().fromJson(genreStr, Genres::class.java)

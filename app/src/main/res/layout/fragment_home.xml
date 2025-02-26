@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="#3C3D37"
     >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
     <TextView
@@ -23,8 +23,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/popularMovieRv"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="15dp"
+        android:layout_height="270dp"
         />
 
             <TextView
@@ -39,8 +38,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/nowPlayingRv"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="15dp"
+                android:layout_height="270dp"
                 />
 
     <TextView
@@ -56,7 +54,7 @@
         android:id="@+id/topRatedRv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:nestedScrollingEnabled="false"
         />
 
         </LinearLayout>
