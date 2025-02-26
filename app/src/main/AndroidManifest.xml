@@ -30,6 +30,10 @@
             android:label="@string/title_activity_detail"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
+            android:name=".TestSqliteActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
