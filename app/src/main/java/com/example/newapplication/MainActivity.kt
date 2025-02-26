@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         sharedPref = sharedPref(this)
 
         if (sharedPref.isLoggedIn()) {
-            startActivity(Intent(this, ActivityDetail::class.java))
+            startActivity(Intent(this, HomeActivity::class.java))
         }
 
         binding.btnlogin.setOnClickListener {
@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                 (sharedPref.saveLogin(username))
                 binding.txtpassword.text.clear()
                 binding.txtemail.text.clear()
-                startActivity(Intent(this, ActivityDetail::class.java))
+                startActivity(Intent(this, HomeActivity::class.java))
             } else {
                 Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
             }

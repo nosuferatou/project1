@@ -15,7 +15,7 @@
         android:theme="@style/Theme.AppCompat"
         tools:targetApi="31">
         <activity
-            android:name=".MovieDetail"
+            android:name=".MovieDetailActivity"
             android:exported="false"
             android:label="@string/title_activity_movie_detail"
             android:theme="@style/Theme.AppCompat" />
@@ -25,7 +25,7 @@
             android:label="@string/title_activity_third"
             android:theme="@style/Theme.NewApplication" />
         <activity
-            android:name=".ActivityDetail"
+            android:name=".HomeActivity"
             android:exported="false"
             android:label="@string/title_activity_detail"
             android:theme="@style/Theme.AppCompat.NoActionBar" />

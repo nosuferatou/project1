@@ -12,7 +12,7 @@ import com.example.newapplication.fragment.FragmentProfile
 import com.example.newapplication.fragment.FragmentSearch
 import com.example.newapplication.sharedPref.sharedPref
 
-class ActivityDetail : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     private lateinit var sharedPref: sharedPref
     private lateinit var binding: ActivityDetailBinding
 

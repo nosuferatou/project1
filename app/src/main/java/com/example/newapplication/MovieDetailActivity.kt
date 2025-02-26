@@ -9,13 +9,11 @@ import com.bumptech.glide.Glide
 import com.example.newapplication.databinding.ActivityMoviedetailBinding
 import com.example.newapplication.model.Genres
 import com.example.newapplication.model.Movie
-import com.example.newapplication.model.MovieListModel
 import com.google.gson.Gson
 import java.io.IOException
-import java.math.BigDecimal
 
 
-class MovieDetail : AppCompatActivity() {
+class MovieDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMoviedetailBinding
 
