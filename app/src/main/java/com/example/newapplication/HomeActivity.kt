@@ -6,19 +6,19 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
 import androidx.fragment.app.Fragment
-import com.example.newapplication.databinding.ActivityDetailBinding
+import com.example.newapplication.databinding.ActivityHomeBinding
 import com.example.newapplication.fragment.FragmentHome
 import com.example.newapplication.fragment.FragmentProfile
-import com.example.newapplication.fragment.FragmentSearch
+import com.example.newapplication.fragment.FragmentFavorites
 import com.example.newapplication.sharedPref.sharedPref
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var sharedPref: sharedPref
-    private lateinit var binding: ActivityDetailBinding
+    private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDetailBinding.inflate(layoutInflater)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sharedPref = sharedPref(this)
 
@@ -31,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
                     loadFragment(FragmentHome())
                 }
                 R.id.nav_search -> {
-                    loadFragment(FragmentSearch())
+                    loadFragment(FragmentFavorites())
                 }
                 R.id.nav_profile -> {
                     loadFragment(FragmentProfile())

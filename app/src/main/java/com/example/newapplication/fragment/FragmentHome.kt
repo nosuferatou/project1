@@ -17,6 +17,7 @@ import com.example.newapplication.Constants
 import com.example.newapplication.ItemAdapter.AdapterPopMovie
 import com.example.newapplication.ItemAdapter.AdapterNowPlaying
 import com.example.newapplication.ItemAdapter.AdapterTopRated
+import com.example.newapplication.MovieDetailActivity
 import com.example.newapplication.TestSqliteActivity
 import com.example.newapplication.databinding.FragmentHomeBinding
 import com.example.newapplication.model.Genres
@@ -160,7 +161,7 @@ class FragmentHome: Fragment() {
 
         // logika select item from recycleview (use adapter)
         popularMovie.adapter = AdapterPopMovie(listModel.results, genreResponse) { selectedMovie ->
-                val intent = Intent(context, TestSqliteActivity::class.java).apply {
+                val intent = Intent(context, MovieDetailActivity::class.java).apply {
                     putExtra("MOVIE", selectedMovie)
                 }
                 startActivity(intent)
@@ -180,7 +181,7 @@ class FragmentHome: Fragment() {
 
         // set adapter and select item logic
         nowPlaying.adapter = AdapterNowPlaying(listModel.results, genreResponse) { selectedMovie ->
-            val intent = Intent(context, TestSqliteActivity::class.java).apply {
+            val intent = Intent(context, MovieDetailActivity::class.java).apply {
                 putExtra("MOVIE", selectedMovie)
             }
             startActivity(intent)
@@ -201,7 +202,7 @@ class FragmentHome: Fragment() {
 
         // set adapter and select item logic
         topRated.adapter = AdapterTopRated(listModel.results, genreResponse) { selectedMovie ->
-            val intent = Intent(context, TestSqliteActivity::class.java).apply {
+            val intent = Intent(context, MovieDetailActivity::class.java).apply {
                 putExtra("MOVIE", selectedMovie)
             }
             startActivity(intent)

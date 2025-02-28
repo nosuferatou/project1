@@ -68,4 +68,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "MovieDB", nu
         db.close()
         return movies
     }
+    fun deleteMovie(movieId: Int) {
+        val db = writableDatabase
+        db.delete("movies", "id = ?", arrayOf(movieId.toString()))
+        db.close()
+    }
 }
