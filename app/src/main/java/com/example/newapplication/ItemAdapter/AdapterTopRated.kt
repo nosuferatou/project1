@@ -16,13 +16,19 @@ import com.example.newapplication.model.Genres
 import com.example.newapplication.model.Movie
 
 
-class AdapterTopRated(private val topRatedList: List<Movie>, private val genres: Genres, private val onItemClick: (Movie) -> Unit) :
+class AdapterTopRated(private val topRatedList: MutableList<Movie>, private val genres: Genres, private val onItemClick: (Movie) -> Unit) :
     RecyclerView.Adapter<AdapterTopRated.ItemViewHolder>() {
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val MovieName: TextView = view.findViewById(R.id.movietitle)
         val MovieGenre: TextView = view.findViewById(R.id.moviegenre)
         val MoviePoster: ImageView = view.findViewById(R.id.moviepict)
+    }
+
+    fun addMovies(newMovies: List<Movie>) {
+        val startPosition = topRatedList.size
+        topRatedList.addAll(newMovies)
+        notifyItemRangeInserted(startPosition, newMovies.size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {

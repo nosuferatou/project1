@@ -3,60 +3,61 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/svParent"
     android:background="#3C3D37"
     >
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Popular Movies"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/popularMovieRv"
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Now Playing Movies"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/nowPlayingRv"
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top Rated Movies"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/topRatedRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:nestedScrollingEnabled="false"
+            />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Popular Movies"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/popularMovieRv"
-        android:layout_width="match_parent"
-        android:layout_height="270dp"
-        />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Now Playing Movies"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/nowPlayingRv"
-                android:layout_width="match_parent"
-                android:layout_height="270dp"
-                />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Top Rated Movies"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/topRatedRv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        />
-
-        </LinearLayout>
+    </LinearLayout>
 
 </ScrollView>

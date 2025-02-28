@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newapplication.Constants
-import com.example.newapplication.ItemAdapter.AdapterPopMovie
 import com.example.newapplication.ItemAdapter.AdapterNowPlaying
+import com.example.newapplication.ItemAdapter.AdapterPopMovie
 import com.example.newapplication.ItemAdapter.AdapterTopRated
 import com.example.newapplication.MovieDetailActivity
-import com.example.newapplication.TestSqliteActivity
 import com.example.newapplication.databinding.FragmentHomeBinding
 import com.example.newapplication.model.Genres
 import com.example.newapplication.model.MovieListModel
@@ -30,251 +29,163 @@ import retrofit2.Response
 import java.io.IOException
 
 class SpaceItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(
-        outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
-    ) {
-        outRect.bottom = space // Add space at the bottom of each item
-        outRect.left = space   // Add space on the left
-        outRect.right = space  // Add space on the right
-        outRect.top = space
-
-        // Add space at the top only for the first item to avoid extra space at the top of the list
-//        if (parent.getChildAdapterPosition(view) == 0) {
-//            outRect.top = space
-        }
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        outRect.set(space, space, space, space)
     }
+}
 
-
-class FragmentHome: Fragment() {
+class FragmentHome : Fragment() {
     private lateinit var binding: FragmentHomeBinding
+    private var currentPage = 1
+    private var isLoading = false
+    private var totalPages = 1
+    private lateinit var topRatedAdapter : AdapterTopRated
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHomeBinding.inflate(layoutInflater)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // call function
         getPopularMovie()
         getNowPlayingMovie()
-        getTopRated()
-
-
+        getTopRated(currentPage)
+        setOnBottomScroll()
     }
 
-    // membuat fungsi getPopularMovie untuk menampilkan popular movie, (harus membuat fungsi set
-    // jika menggunakan recyclerview untuk logicnya & binding recyclerview serta adapternya
-    private fun getPopularMovie() {
-        // Contoh GET semua post
-        RetrofitClient.instance.getPopularMovies(Constants.API_KEY).enqueue(object :
-            Callback<MovieListModel> {
-            override fun onFailure(call: Call<MovieListModel>, t: Throwable) {
-                Log.e("Retrofit", "Error: ${t.message}")
-            }
+    private fun setOnBottomScroll() {
+        binding.svParent.viewTreeObserver.addOnScrollChangedListener {
+            val scrollView = binding.svParent
+            val view = scrollView.getChildAt(scrollView.childCount - 1)
 
-            override fun onResponse(
-                call: Call<MovieListModel>,
-                response: Response<MovieListModel>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.let { posts ->
-                        setPopularRv(posts)
-                    }
-                }
+            val diff = view.bottom - (scrollView.height + scrollView.scrollY)
+
+            if (diff == 0 && !isLoading && currentPage < totalPages) {
+                isLoading = true
+                currentPage++
+                loadMoreMovies()
             }
         }
-        )
     }
 
-    // get untuk mengambil data dari API, set untuk mengatur recyclerView
+    private fun loadMoreMovies() {
+        getTopRated(currentPage)
+    }
+
+    private fun getPopularMovie() {
+        RetrofitClient.instance.getPopularMovies(Constants.API_KEY).enqueue(object : Callback<MovieListModel> {
+            override fun onFailure(call: Call<MovieListModel>, t: Throwable) {
+                Log.e("Retrofit", "Error: ${t.message}")
+            }
+
+            override fun onResponse(call: Call<MovieListModel>, response: Response<MovieListModel>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { setPopularRv(it) }
+                }
+            }
+        })
+    }
+
     private fun getNowPlayingMovie() {
-        RetrofitClient.instance.getNowPlayingMovies(Constants.API_KEY).enqueue(object :
-        Callback<MovieListModel> {
+        RetrofitClient.instance.getNowPlayingMovies(Constants.API_KEY).enqueue(object : Callback<MovieListModel> {
             override fun onFailure(call: Call<MovieListModel>, t: Throwable) {
                 Log.e("Retrofit", "Error: ${t.message}")
             }
 
-            override fun onResponse(
-                call: Call<MovieListModel>,
-                response: Response<MovieListModel>
-            ) {
+            override fun onResponse(call: Call<MovieListModel>, response: Response<MovieListModel>) {
                 if (response.isSuccessful) {
-                    response.body()?.let { posts ->
-                        setNowPlayingRv(posts)
-                    }
+                    response.body()?.let { setNowPlayingRv(it) }
                 }
             }
-
         })
     }
 
-    private fun getTopRated() {
-        RetrofitClient.instance.getTopRated(Constants.API_KEY).enqueue(object :
-            Callback<MovieListModel> {
+    private fun getTopRated(page: Int = 1) {
+        RetrofitClient.instance.getTopRated(Constants.API_KEY, page).enqueue(object : Callback<MovieListModel> {
             override fun onFailure(call: Call<MovieListModel>, t: Throwable) {
                 Log.e("Retrofit", "Error: ${t.message}")
+                isLoading = false
             }
 
-            override fun onResponse(
-                call: Call<MovieListModel>,
-                response: Response<MovieListModel>
-            ) {
+            override fun onResponse(call: Call<MovieListModel>, response: Response<MovieListModel>) {
                 if (response.isSuccessful) {
-                    response.body()?.let { posts ->
-                        setTopRatedRv(posts) // recyclerView
+                    response.body()?.let {
+                        isLoading = false
+                        totalPages = it.total_pages
+                        if (currentPage == 1) {
+                            setTopRatedRv(it)
+                        }
+                        else {
+                            topRatedAdapter.addMovies(it.results)
+                            setRecyclerViewHeightForGrid(binding.topRatedRv, 3)
+                        }
                     }
                 }
             }
-
         })
     }
 
-    // membuat fungsi untuk mengambil data dari Json lokal
     private fun getJsonDataFromAsset(context: Context, fileName: String): String? {
-        val jsonString: String
-        try {
-            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+        return try {
+            context.assets.open(fileName).bufferedReader().use { it.readText() }
         } catch (ioException: IOException) {
             ioException.printStackTrace()
-            return null
+            null
         }
-        return jsonString
     }
 
-
-    // function set RecyclerView Popular Movie
-    private  fun setPopularRv(listModel: MovieListModel){
-        // membuat variabel untuk recycleview yang ada di layout fragment_home.xml
+    private fun setPopularRv(listModel: MovieListModel) {
         val popularMovie = binding.popularMovieRv
         popularMovie.addItemDecoration(SpaceItemDecoration(10))
-
-        // set recycleview
         popularMovie.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val genreStr = getJsonDataFromAsset(requireContext(),"genre.json")
-        val genreResponse = Gson().fromJson(genreStr, Genres::class.java)
-
-        // logika select item from recycleview (use adapter)
+        val genreResponse = Gson().fromJson(getJsonDataFromAsset(requireContext(), "genre.json"), Genres::class.java)
         popularMovie.adapter = AdapterPopMovie(listModel.results, genreResponse) { selectedMovie ->
-                val intent = Intent(context, MovieDetailActivity::class.java).apply {
-                    putExtra("MOVIE", selectedMovie)
-                }
-                startActivity(intent)
+            startActivity(Intent(context, MovieDetailActivity::class.java).apply {
+                putExtra("MOVIE", selectedMovie)
+            })
             Toast.makeText(requireContext(), "Clicked: ${selectedMovie.title}", Toast.LENGTH_SHORT).show()
         }
     }
 
-    // set RecyclerView Now Playing
     private fun setNowPlayingRv(listModel: MovieListModel) {
         val nowPlaying = binding.nowPlayingRv
         nowPlaying.addItemDecoration(SpaceItemDecoration(10))
         nowPlaying.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        // get Data from local Json
-        val genreStr = getJsonDataFromAsset(requireContext(),"genre.json")
-        val genreResponse = Gson().fromJson(genreStr, Genres::class.java)
-
-        // set adapter and select item logic
+        val genreResponse = Gson().fromJson(getJsonDataFromAsset(requireContext(), "genre.json"), Genres::class.java)
         nowPlaying.adapter = AdapterNowPlaying(listModel.results, genreResponse) { selectedMovie ->
-            val intent = Intent(context, MovieDetailActivity::class.java).apply {
+            startActivity(Intent(context, MovieDetailActivity::class.java).apply {
                 putExtra("MOVIE", selectedMovie)
-            }
-            startActivity(intent)
+            })
             Toast.makeText(requireContext(), "Clicked: ${selectedMovie.title}", Toast.LENGTH_SHORT).show()
         }
     }
 
-    // set RecyclerView Top Rated
     private fun setTopRatedRv(listModel: MovieListModel) {
         val topRated = binding.topRatedRv
         topRated.addItemDecoration(SpaceItemDecoration(10))
-
         topRated.layoutManager = GridLayoutManager(requireContext(), 3)
-
-        // get Data from local Json
-        val genreStr = getJsonDataFromAsset(requireContext(),"genre.json")
-        val genreResponse = Gson().fromJson(genreStr, Genres::class.java)
-
-        // set adapter and select item logic
-        topRated.adapter = AdapterTopRated(listModel.results, genreResponse) { selectedMovie ->
-            val intent = Intent(context, MovieDetailActivity::class.java).apply {
+        val genreResponse = Gson().fromJson(getJsonDataFromAsset(requireContext(), "genre.json"), Genres::class.java)
+        topRatedAdapter = AdapterTopRated(listModel.results, genreResponse) { selectedMovie ->
+            startActivity(Intent(context, MovieDetailActivity::class.java).apply {
                 putExtra("MOVIE", selectedMovie)
-            }
-            startActivity(intent)
+            })
             Toast.makeText(requireContext(), "Clicked: ${selectedMovie.title}", Toast.LENGTH_SHORT).show()
         }
+        topRated.adapter = topRatedAdapter
         setRecyclerViewHeightForGrid(topRated, 3)
-
     }
 
-        }
-
-
-
-    // membuat function
-//    private  fun setNowPlaying(){
-//        // membuat variabel untuk recycleview yang ada di layout fragment_home.xml
-//        val recycleViewNowPlaying = binding.recycleViewNowPlaying
-//
-//        val userListItem = listOf(
-//            Item("Fernando", 21, R.drawable.profile),
-//            Item("Jose", 30, R.drawable.img),
-//            Item("Adam", 24, R.drawable.pp2),
-//            Item("Joko", 19, R.drawable.profile),
-//            Item("Jose", 30, R.drawable.img),
-//            Item("Adam", 24, R.drawable.pp2),
-//            Item("Joko", 19, R.drawable.profile)
-//
-//        )
-//
-//        // set recycleview
-//        recycleViewNowPlaying.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//        recycleViewNowPlaying.adapter = ItemAdapter(userListItem)
-//    }
-//    private  fun setTopRv(){
-//        // membuat variabel untuk recycleview yang ada di layout fragment_home.xml
-//        val recycleview2 = binding.recycleView2
-//
-//        val movieList = listOf(
-//            Item2("Heil Fuhrer", "Historical, Action", R.drawable.img),
-//            Item2("Burning Hall", "Action, Thriller", R.drawable.pp2),
-//            Item2("Bladerunner 2069", "Sci-Fi, Action", R.drawable.real),
-//            Item2("Five Night at Cio's", "Horror, Thriller", R.drawable.fnaf),
-//            Item2("Devil May Cry", "Action, Sci-Fi", R.drawable.dmc),
-//            Item2("Heil Fuhrer", "Historical, Action", R.drawable.img),
-//            Item2("Burning Hall", "Action, Thriller", R.drawable.pp2),
-//            Item2("Bladerunner 2069", "Sci-Fi, Action", R.drawable.real),
-//            Item2("Five Night at Cio's", "Horror, Thriller", R.drawable.fnaf),
-//            Item2("Five Night at Cio's", "Horror, Thriller", R.drawable.fnaf),
-//            Item2("Devil May Cry", "Action, Sci-Fi", R.drawable.dmc),
-//            Item2("Five Night at Cio's", "Horror, Thriller", R.drawable.fnaf),
-//            Item2("Devil May Cry", "Action, Sci-Fi", R.drawable.dmc),
-//            Item2("Heil Fuhrer", "Historical, Action", R.drawable.img),
-//            Item2("Burning Hall", "Action, Thriller", R.drawable.pp2),
-//            Item2("Bladerunner 2069", "Sci-Fi, Action", R.drawable.real),
-//            Item2("Five Night at Cio's", "Horror, Thriller", R.drawable.fnaf),
-//            Item2("Five Night at Cio's", "Horror, Thriller", R.drawable.fnaf),
-//            Item2("Devil May Cry", "Action, Sci-Fi", R.drawable.dmc)
-//        )
-//
-//        // set recycleview
-//        recycleview2.layoutManager = GridLayoutManager(requireContext(),3)
-//        recycleview2.adapter = ItemAdapter2(movieList.re)
-//        setRecyclerViewHeightForGrid(recycleview2, 3)
-//    }
-
-    fun setRecyclerViewHeightForGrid(recyclerView: RecyclerView, spanCount: Int) {
-        val adapter = recyclerView.adapter ?: return
-        val itemCount = adapter.itemCount
-
-        if (itemCount == 0) return
-
+    private fun setRecyclerViewHeightForGrid(recyclerView: RecyclerView, spanCount: Int) {
         recyclerView.post {
+            val adapter = recyclerView.adapter ?: return@post
+            val itemCount = adapter.itemCount
+            if (itemCount == 0) return@post
+
             val holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(0))
             adapter.onBindViewHolder(holder, 0)
 
@@ -282,18 +193,12 @@ class FragmentHome: Fragment() {
                 View.MeasureSpec.makeMeasureSpec(recyclerView.width / spanCount, View.MeasureSpec.EXACTLY),
                 View.MeasureSpec.UNSPECIFIED
             )
-
             val itemHeight = holder.itemView.measuredHeight
-
-            // Calculate total rows
             val rows = (itemCount + spanCount - 1) / spanCount
-
-            val extraSpace = itemHeight
-
-            // Set RecyclerView height
             val params = recyclerView.layoutParams
-            params.height = (rows * itemHeight) + extraSpace // Add extra space for last row
+            params.height = (rows * itemHeight) + itemHeight
             recyclerView.layoutParams = params
             recyclerView.requestLayout()
         }
     }
+}

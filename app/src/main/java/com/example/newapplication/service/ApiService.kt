@@ -15,5 +15,8 @@ interface ApiService {
     fun getNowPlayingMovies(@Query("api_key") apiKey: String = Constants.API_KEY): Call<MovieListModel>
 
     @GET("top_rated")
-    fun getTopRated(@Query("api_key") apiKey: String = Constants.API_KEY): Call<MovieListModel>
+    fun getTopRated(
+        @Query("api_key") apiKey: String = Constants.API_KEY,
+        @Query("page") page: Int = 1
+    ): Call<MovieListModel>
 }

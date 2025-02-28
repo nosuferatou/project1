@@ -4,7 +4,10 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class MovieListModel(val results: MutableList<Movie>) : Parcelable
+data class MovieListModel(
+    val results: MutableList<Movie>,
+    val total_pages: Int = 1
+) : Parcelable
 
 @Parcelize
 data class Movie(
